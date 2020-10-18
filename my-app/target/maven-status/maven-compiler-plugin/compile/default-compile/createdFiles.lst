@@ -1,1 +1,5 @@
+com/mycompany/app/IndexFiles.class
+com/mycompany/app/App.class
 com/mycompany/app/LuceneTest.class
+com/mycompany/app/SearchTest.class
+com/mycompany/app/CreateIndex.class
