@@ -1,4 +1,4 @@
-# Lucene Search Engine - Assignment 1 - Info Retrieval 
+## Lucene Search Engine - Assignment 1 - Info Retrieval 
 
 Code for indexing, searching and other related functionality is stored under the my-app directory. 
 
