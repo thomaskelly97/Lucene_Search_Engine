@@ -1,10 +1,8 @@
-
-
 package com.mycompany.app;
 
 import java.io.IOException;
-
 import java.nio.file.Paths;
+import org.apache.lucene.analysis.Analyzer;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -33,7 +31,7 @@ import java.nio.file.Paths;
 
 public class IndexFiles {
  public static void main(String[] args) throws IOException, ParseException {
-        StandardAnalyzer analyzer = new StandardAnalyzer();
+        Analyzer analyzer = new CustomAnalyzer(); // now using custom analyzer
         String inputFilePath = "/Users/user/Documents/College/5th_Year/InfoRet/Lucene_Search_Engine/cran/cran.all.1400";
         File file = new File(inputFilePath);
 

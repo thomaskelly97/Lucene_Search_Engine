@@ -1,3 +1,4 @@
+com/mycompany/app/IndexFiles.class
+com/mycompany/app/CustomAnalyzer.class
 com/mycompany/app/SearchTest.class
 com/mycompany/app/CreateIndex.class
-com/mycompany/app/IndexFiles.class
