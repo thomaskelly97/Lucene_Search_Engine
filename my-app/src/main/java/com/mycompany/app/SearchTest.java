@@ -80,17 +80,19 @@ public class SearchTest {
     Scanner scan = new Scanner(System.in);
     String term = "";
     String nextLine = "";
-    int abstractNumber = 0;
+    String queryTerm = "";
+    
     while(true) {
+      System.out.println("------------------------\n");
       if (queryPath == "") { // we need to ask user for a term
         System.out.print("> Please enter a query term:");
         term = scan.nextLine();
         System.out.println("...searching for term: " + term);
+        queryTerm = term.toLowerCase();
       } else { // we are using the queries from a given file
         // set term to each line read from the .qry file here
         // so each 
         term = queryFile.readLine();
-        System.out.println("Reading in line: " + term);
         if (term == null || term.length() == 0) {
           break;
         }
@@ -102,45 +104,31 @@ public class SearchTest {
           while (!term.substring(0,2).equals(".I")) {
             nextLine = nextLine + term;
             term = queryFile.readLine();
-            System.out.println(">>> BIG CUNT <<< " + term);
             if (term == null) break;
           }
         }
+        queryTerm = nextLine;
       }
 
-      // This method reads the number provided using keyboard
+      // https://stackoverflow.com/questions/5100528/how-to-do-a-multi-field-phrase-search-in-lucene
       MultiFieldQueryParser parser = new MultiFieldQueryParser(new String[]{"Title", "Author", "Bibliography", "Content"}, analyzer);
-      Query query = parser.parse(QueryParser.escape(nextLine.trim()));
+      Query query = parser.parse(QueryParser.escape(queryTerm.trim()));
 
-      TopDocs results = searcher.search(query, 1000);
-      
-      int numHits = Integer.parseInt(results.totalHits.toString().replaceAll("[\\D]", ""));
-      System.out.println("Number of Hits " + numHits);
-      
-      
+      TopDocs results = searcher.search(query, 10);
       ScoreDoc[] hits = results.scoreDocs;
-      for (int j = 0; j < numHits; j++) {
-        System.out.println("Score for hit: " + j + "-" + hits[j].score);
+      
+      int numHits = Integer.parseInt(results.totalHits.toString().replaceAll("[\\D]", "")); // ugly parsing because we need int from string
+      System.out.println("------ Query ------\n==> " + queryTerm);
+      System.out.println(numHits + " total matching documents.");
+
+      for (int j = 0; j < hits.length; j++) { // hits.length seems to always report a value = 10
         Document doc = searcher.doc(hits[j].doc);
-        String path = doc.get("path");
-        System.out.println("path: " + path);
-        if (path != null) {
-			    System.out.println(" 0 " + path.replace(".I ","") + " " +(j+1)+ " " + hits[j].score);		  
+        String abstractNumber = doc.get("path");
+        if (abstractNumber != null) {
+			    System.out.println((j+1) + " - " + abstractNumber.replace(".I ","abstract: ") +  " - score: " + hits[j].score);		  
 		    } 
       }
     }
       // scan.close();
-    // Query parser parses the query 
-
-    // Use the parser to parse a query 
-    // Store result of using the query to search 
-
-    // query = parser.parse("critical shear");
-    // results = searcher.search(query, 5);
-    // System.out.println("Hits for superhero: " + results.totalHits);
-
-    // query = parser.parse("air flow in a separating laminar boundary layer");
-    // results = searcher.search(query, 5);
-    // System.out.println("Hits for buckling of transverse stiffened plates under shear: " + results.totalHits);
   }
 }
