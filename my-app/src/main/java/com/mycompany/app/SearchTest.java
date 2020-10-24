@@ -43,9 +43,8 @@ public class SearchTest {
     String outputDir = "/Users/user/Documents/College/5th_Year/InfoRet/Lucene_Search_Engine/index";
     Analyzer analyzer = new CustomAnalyzer();
     for (int i =0; i < args.length;i++) {
-      System.out.print(args[i]);
       if ("-scoring".equals(args[i])) {
-        System.out.print("setting scoring to" + args[i+1]);
+        System.out.print("-> Setting scoring to" + args[i+1]) ;
         scoring = Integer.parseInt(args[i+1]);
         i++;
       } else if ("-queryPath".equals(args[i])) {
@@ -81,9 +80,11 @@ public class SearchTest {
     String term = "";
     String nextLine = "";
     String queryTerm = "";
+    int queryId = 0;
     
     while(true) {
       System.out.println("------------------------\n");
+
       if (queryPath == "") { // we need to ask user for a term
         System.out.print("> Please enter a query term:");
         term = scan.nextLine();
@@ -93,13 +94,18 @@ public class SearchTest {
         // set term to each line read from the .qry file here
         // so each 
         term = queryFile.readLine();
+        System.out.println(term);
         if (term == null || term.length() == 0) {
           break;
         }
         // need to parse out .I, .W and get the term to search
         if (term.substring(0,2).equals(".I")) {
+          queryId++;
+
           term = queryFile.readLine();
-          term = queryFile.readLine();
+          if (term.substring(0,2).equals(".W")) {
+            term = queryFile.readLine();
+          }
           nextLine = "";
           while (!term.substring(0,2).equals(".I")) {
             nextLine = nextLine + term;
@@ -107,25 +113,27 @@ public class SearchTest {
             if (term == null) break;
           }
         }
-        queryTerm = nextLine;
+        queryTerm = nextLine;   
       }
 
       // https://stackoverflow.com/questions/5100528/how-to-do-a-multi-field-phrase-search-in-lucene
       MultiFieldQueryParser parser = new MultiFieldQueryParser(new String[]{"Title", "Author", "Bibliography", "Content"}, analyzer);
       Query query = parser.parse(QueryParser.escape(queryTerm.trim()));
 
-      TopDocs results = searcher.search(query, 10);
+      TopDocs results = searcher.search(query, 50);
+      int numHits = Integer.parseInt(results.totalHits.toString().replaceAll("[\\D]", "")); // ugly parsing because we need int from string
+      
+      results = searcher.search(query, numHits);
       ScoreDoc[] hits = results.scoreDocs;
       
-      int numHits = Integer.parseInt(results.totalHits.toString().replaceAll("[\\D]", "")); // ugly parsing because we need int from string
       System.out.println("------ Query ------\n==> " + queryTerm);
-      System.out.println(numHits + " total matching documents.");
-
-      for (int j = 0; j < hits.length; j++) { // hits.length seems to always report a value = 10
+      System.out.println(numHits + " total matching documents.\n-- Ranked Results --");
+      for (int j = 0; j < numHits; j++) { // hits.length seems to always report a value = 10
         Document doc = searcher.doc(hits[j].doc);
         String abstractNumber = doc.get("path");
         if (abstractNumber != null) {
-			    System.out.println((j+1) + " - " + abstractNumber.replace(".I ","abstract: ") +  " - score: " + hits[j].score);		  
+          // System.out.println((j+1) + " - " + abstractNumber.replace(".I ","abstract: ") +  " - score: " + hits[j].score);		  
+          System.out.println(queryId + " Q0" + abstractNumber.replace(".I","") + " " + hits[j].score + " " + (j+1) + " STANDARD");
 		    } 
       }
     }

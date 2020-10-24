@@ -49,16 +49,6 @@ public class IndexFiles {
                     document.add(pathField);
                     currentLine = br.readLine();
                     while (!currentLine.matches("(.*)(.I)(.*)")) {
-                        switch(true) {
-                            case currentLine.matches("(.*)(.T)(.*)"):
-                                System.out.println("PARSE TITLE");
-                            case currentLine.matches("(.*)(.A)(.*)"):
-                                System.out.println("PARSE AUTHOR");
-                            case currentLine.matches("(.*)(.B)(.*)"):
-                                System.out.println("PARSE BIB");
-                            case currentLine.matches("(.*)(.W)(.*)"):
-                                System.out.println("PARSE CONTENT");
-                        }
                         if (currentLine.matches("(.*)(.T)(.*)")) {
                             fieldName = "Title";
                             currentLine = br.readLine();
