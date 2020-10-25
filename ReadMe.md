@@ -1,5 +1,9 @@
 Lucene Search Engine - Assignment 1 - Info Retrieval 
 ===
+MVN was used to setup the Java Project. After downloading lucene, compile the project with; 
+```
+mvn package
+```
 
 Code for indexing, searching and other related functionality is stored under the my-app directory. 
 
@@ -12,6 +16,7 @@ After navigating to the my-app directory, the 'index' bash script can be execute
 ```
 ./index
 ```
+The index is stored under /index directory. 
 
 Searching
 ---
@@ -24,5 +29,16 @@ Using the ./search command, two options are available;
 ```
 ./search -s bm25 -q ../cran/cran.qry
 ```
+When querying is complete, the query results and scoring is stored in the `/cran/results_for_trec_eval` file.
+
+Evaluation
+---
+Navigate to the trec_eval directory and as specified [here](http://www.rafaelglater.com/en/post/learn-how-to-use-trec_eval-to-evaluate-your-information-retrieval-system) run;
+```
+./trec_eval ../cran/reformatted_cranqrel ../cran/results_for_trec_eval
+```
+
+Note: I reformatted `cranqel` to adhere to the format specified in the trec_eval docs for this file. This is the function of the python script under /cran/reformat_cranqrel.py. 
+
 
 Command to run files java -cp target/my-app-1.0-SNAPSHOT.jar:lucene-8.6.2/core/lucene-core-8.6.2.jar:lucene-8.6.2/analysis/common/lucene-analyzers-common-8.6.2.jar:lucene-8.6.2/queryparser/lucene-queryparser-8.6.2.jar com.mycompany.app.SearchTest
