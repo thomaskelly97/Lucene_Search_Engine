@@ -42,7 +42,7 @@ public class IndexFiles {
         try (BufferedReader br = new BufferedReader(new FileReader(inputFilePath))) {
             currentLine = br.readLine();
             while(currentLine != null){
-                System.out.print("-> Indexing abstract: " + currentLine + "- ");
+                System.out.print("-> Indexing document: " + currentLine + "- ");
                 document = new Document();
                 if (currentLine.matches("(.*)(.I)(.*)")) {
                     Field pathField = new StringField("path", currentLine, Field.Store.YES);
@@ -59,7 +59,7 @@ public class IndexFiles {
                             currentLine = br.readLine();
                         }
                         else if (currentLine.matches("(.*)(.B)(.*)")) {
-                            fieldName = "Bibliography";
+                            fieldName = "B_Field";
                             currentLine = br.readLine();
                         }
                         else if (currentLine.matches("(.*)(.W)(.*)")) {
@@ -74,6 +74,7 @@ public class IndexFiles {
                 iwriter.addDocument(document);
             }
             iwriter.close();
+            System.out.println("==> Finished indexing documents.");
         } catch (IOException e) {
             e.printStackTrace();
         }

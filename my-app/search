@@ -1,0 +1,40 @@
+#!/bin/bash
+
+while getopts s:q: flag
+do
+    case "${flag}" in
+        s) scoring=${OPTARG};;
+        q) queryPath=${OPTARG};;
+    esac
+done
+
+usescoring=0
+querymode=0
+echo "--- INITIALISE SEARCH SCRIPT ---"
+if [ "$scoring" == "vsm" ]
+then
+    echo "-> Using VSM scoring"
+    usescoring=0 
+elif
+[ "$scoring" == "bm25" ]
+then
+    echo "-> Using BM25 scoring"
+    usescoring=1
+else
+    echo "-s Usage: './search -s { vsm | bm25 }"
+    exit 1
+fi
+
+if [ -f "$queryPath" ]
+then
+    echo "-> Using queries from query file at $queryPath"
+    querymode="$queryPath"
+else
+    echo "-> No query file path specified. Asking user to input query."
+    echo "-> To specify a path to a query file, use -q flag e.g. './search -q ./cran/cran.qry'"
+    querymode=0
+fi 
+
+echo ""
+echo "==> Executing java search file."
+java -cp target/my-app-1.0-SNAPSHOT.jar:lucene-8.6.2/core/lucene-core-8.6.2.jar:lucene-8.6.2/analysis/common/lucene-analyzers-common-8.6.2.jar:lucene-8.6.2/queryparser/lucene-queryparser-8.6.2.jar com.mycompany.app.SearchTest -scoring "$usescoring" -queryPath "$querymode"
