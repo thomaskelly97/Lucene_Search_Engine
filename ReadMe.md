@@ -39,9 +39,10 @@ Navigate to the trec_eval directory. The results file and cranqrel are formatted
 ```
 
 
-### Please Note; 
-+ The cran.qry file was reformatted as described in the blackboard announcement, and written to */cran/reformatted_cran.qry*
-+ I noticed the cranqrel file was also incorrectly formatted for trec_eval, and reformatted that and stored in */cran/reformatted_cranqrel*
+Please Note; 
+---
++ The cran.qry file was reformatted as described in the blackboard announcement, and written to **/cran/reformatted_cran.qry**. This file should be used when searching instead of cran.qry.
++ I noticed the cranqrel file was also incorrectly formatted for trec_eval, and reformatted that and stored in **/cran/reformatted_cranqrel**. This file should be used instead of cranqrel for evaluation.
 - This is the function of the python scripts in the /cran directory.
 
 
