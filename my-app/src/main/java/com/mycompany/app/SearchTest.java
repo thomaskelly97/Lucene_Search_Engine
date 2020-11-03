@@ -39,7 +39,7 @@ public class SearchTest {
   public static void main(String[] args) throws IOException, ParseException {
     int scoring = 0; // Vector Space Model = 0; BM25 = 1
     String queryPath = "";
-    String outputDir = "/Users/user/Documents/College/5th_Year/InfoRet/Lucene_Search_Engine/index";
+    String outputDir = "../index";
     Analyzer analyzer = new CustomAnalyzer();
     for (int i =0; i < args.length;i++) {
       if ("-scoring".equals(args[i])) {
@@ -129,9 +129,9 @@ public class SearchTest {
         Document doc = searcher.doc(hits[j].doc);
         String abstractNumber = doc.get("path");
         if (abstractNumber != null) {
-          // System.out.println(queryId + " Q0" + abstractNumber.replace(".I","") + " " + hits[j].score + " " + (j+1) + " STANDARD");
+          // System.out.println(queryId + " Q0" + abstractNumber.replace(".I","") + " " + (j+1) + " " + hits[j].score + " " + "STANDARD\n");
           // This string needs to be written to a trec_eval_results file ^^^
-          fileWriter.write(queryId + " Q0" + abstractNumber.replace(".I","") + " " + hits[j].score + " " + (j+1) + " STANDARD\n");
+          fileWriter.write(queryId + " Q0" + abstractNumber.replace(".I","") + " " + (j+1) + " " + hits[j].score + " " + "STANDARD\n");
 		    } 
       }
       if (userInputMode) { // after we process the input mode query, we need to close so that results can be sent to results file

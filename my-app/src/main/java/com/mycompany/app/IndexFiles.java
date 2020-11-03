@@ -25,10 +25,10 @@ public class IndexFiles {
         Analyzer analyzer = new CustomAnalyzer(); // now using custom analyzer
 
         // input file = files to index
-        String inputFilePath = "/Users/user/Documents/College/5th_Year/InfoRet/Lucene_Search_Engine/cran/cran.all.1400";
+        String inputFilePath = "../cran/cran.all.1400";
         File file = new File(inputFilePath);
         // outputDir where the index will be stored
-        String outputDir = "/Users/user/Documents/College/5th_Year/InfoRet/Lucene_Search_Engine/index";
+        String outputDir = "../index";
 
         Directory directory = FSDirectory.open(Paths.get(outputDir));
         IndexWriterConfig config = new IndexWriterConfig(analyzer);
