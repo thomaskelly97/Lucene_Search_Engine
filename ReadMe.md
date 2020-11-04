@@ -20,7 +20,7 @@ The index is stored under /index directory.
 
 Searching
 ---
-+ Handled in SearchFiles.java - under `/my-app/src/java/com/company/app/SearchFiles.java`.
++ Handled in SearchTest.java - under `/my-app/src/java/com/company/app/SearchTest.java`.
 I also wrote a bash script to execute the search functionality, under /my-app/; `./search`. 
 Using the ./search command, two options are available;
 + -s: Set scoring to either 'vsm' or 'bm25' 
