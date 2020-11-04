@@ -18,6 +18,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
+
 
 
 public class IndexFiles {
@@ -31,8 +33,15 @@ public class IndexFiles {
         String outputDir = "../index";
 
         Directory directory = FSDirectory.open(Paths.get(outputDir));
+        String[] directoryContents = directory.listAll(); 
+
+        if (Arrays.toString(directoryContents).length() != 2) { // 2 is empty (.) (..)
+            System.out.println("-> Index already exists. Please delete the contents of /index.");
+            System.exit(1);
+        } 
+        // Could do an else here for append mode, but we'll only be using one doc path, cran.all.1400
         IndexWriterConfig config = new IndexWriterConfig(analyzer);
-        config.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND); // create or append works on either first time or to append to existing index
+        config.setOpenMode(IndexWriterConfig.OpenMode.CREATE); // create or append works on either first time or to append to existing index
         IndexWriter iwriter = new IndexWriter(directory, config);  
         
         String currentLine = ""; // line from buffer 

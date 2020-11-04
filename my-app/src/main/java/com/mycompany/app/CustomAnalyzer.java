@@ -9,7 +9,7 @@ import org.apache.lucene.analysis.en.PorterStemFilter;
 import org.apache.lucene.analysis.CharArraySet;
 
 
-// Code for analyzer taken from:
+// Code for analyzer from:
 // https://lucene.apache.org/core/6_4_0/core/org/apache/lucene/analysis/Analyzer.html#:~:text=An%20Analyzer%20builds%20TokenStreams%2C%20which,extracting%20index%20terms%20from%20text.&text=Common%3A%20Analyzers%20for%20indexing%20content,from%20ICU%20to%20Apache%20Lucene
 // And modified to account for stop words and stemming 
 

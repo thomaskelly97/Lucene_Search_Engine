@@ -39,8 +39,7 @@ public class SearchTest {
   public static void main(String[] args) throws IOException, ParseException {
     int scoring = 0; // Vector Space Model = 0; BM25 = 1
     String queryPath = "";
-    String outputDir = "../index";
-    Analyzer analyzer = new CustomAnalyzer();
+    String indexDir = "../index";
     for (int i =0; i < args.length;i++) {
       if ("-scoring".equals(args[i])) {
         scoring = Integer.parseInt(args[i+1]);
@@ -52,14 +51,15 @@ public class SearchTest {
     }
     
   
-    Directory directory = FSDirectory.open(Paths.get(outputDir));
+    Directory directory = FSDirectory.open(Paths.get(indexDir));
     
     // Index reader reads from the index at 'directory'
     IndexReader reader = DirectoryReader.open(directory);
     // Searcher takes the index reader 
+    // https://stackoverflow.com/questions/38187180/add-bm25-scoring-in-lucene
     IndexSearcher searcher = new IndexSearcher(reader);
     if (scoring == 0) {
-      searcher.setSimilarity(new ClassicSimilarity());
+      searcher.setSimilarity(new ClassicSimilarity()); // https://stackoverflow.com/questions/53564274/use-vector-space-model-instead-of-bm25-in-lucene/53579659
     }
     if (scoring == 1) {
       searcher.setSimilarity(new BM25Similarity());
@@ -112,14 +112,15 @@ public class SearchTest {
         queryTerm = nextLine;   
       }
 
+      Analyzer analyzer = new CustomAnalyzer();
       // https://stackoverflow.com/questions/5100528/how-to-do-a-multi-field-phrase-search-in-lucene
       MultiFieldQueryParser parser = new MultiFieldQueryParser(new String[]{"Title", "Author", "B_Field", "Content"}, analyzer);
       Query query = parser.parse(QueryParser.escape(queryTerm.trim()));
 
-      TopDocs results = searcher.search(query, 50);
+      TopDocs results = searcher.search(query, 50); // initial search with 50
       int numHits = Integer.parseInt(results.totalHits.toString().replaceAll("[\\D]", "")); // ugly parsing because we need int from string
       
-      results = searcher.search(query, numHits);
+      results = searcher.search(query, numHits); // then research to find all docs
       ScoreDoc[] hits = results.scoreDocs;
       
       System.out.println("------ New query " + queryId + " ------\n==> " + queryTerm);
